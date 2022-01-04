@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MyAppBar from "./component/MyAppBar";
+import AgencySearch from "./component/AgencySearch";
+import HistoryTable from "./component/HistoryTable";
+import AgencyTable from "./component/AgencyTable";
+import Login from "./component/Login";
+
+import Container from "@mui/material/Container";
+import Join from "./component/Join";
+import History from "./component/History";
+import Opening from "./component/Opening";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <MyAppBar />
+        <Routes>
+          <Route path="/">aaa</Route>
+          <Route path="/b">bbb</Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/agency" element={<AgencyTable />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/opening" element={<Opening />} />
+        </Routes>
+      </BrowserRouter>
+      {/* <AgencySearch /> */}
     </div>
   );
 }
