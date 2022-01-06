@@ -45,6 +45,12 @@ export default function MyDrawer({ open, toggleDrawer }) {
               <ListItemText>개통 및 충전 내역</ListItemText>
             </ListItem>
           </Link>
+
+          <Link to="/product">
+            <ListItem button key="3">
+              <ListItemText>상품 관리</ListItemText>
+            </ListItem>
+          </Link>
         </List>
       </Box>
     </Drawer>

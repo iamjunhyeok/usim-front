@@ -11,6 +11,7 @@ import Container from "@mui/material/Container";
 import Join from "./component/Join";
 import History from "./component/History";
 import Opening from "./component/Opening";
+import Product from "./page/Product";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/agency" element={<AgencyTable />} />
           <Route path="/join" element={<Join />} />
           <Route path="/opening" element={<Opening />} />
+          <Route path="/product" element={<Product />} />
         </Routes>
       </BrowserRouter>
       {/* <AgencySearch /> */}

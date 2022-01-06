@@ -52,11 +52,9 @@ export default function MyAppBar() {
               </IconButton>
             </div>
           ) : (
-            <Button color="inherit">
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                Login
-              </Link>
-            </Button>
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              <Button color="inherit">Login</Button>
+            </Link>
           )}
           <MyDrawer open={open} toggleDrawer={toggleDrawer} />
         </Toolbar>
