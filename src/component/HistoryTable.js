@@ -87,7 +87,7 @@ export default function HistoryTable() {
   const [items, setItems] = useState(null);
   useEffect(() => {
     axios
-      .get("http://192.168.0.24:8080/openings", {
+      .get("http://192.168.0.52:8080/openings", {
         params: {
           page: page,
         },

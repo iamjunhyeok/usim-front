@@ -1,24 +1,35 @@
 import React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import LoginIcon from "@mui/icons-material/Login";
-import { Link } from "react-router-dom";
+import CustomLink from "./CustomLink";
+
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const validationSchema = yup.object({
+    email: yup
+      .string()
+      .email("이메일 형식이 아닙니다")
+      .required("이메일이 입력되지 않음"),
+    password: yup.string().required("비밀번호가 입력되지 않음"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
     <Container maxWidth="xs">
       <Box
@@ -29,20 +40,25 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LoginIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
           로그인
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             fullWidth
             id="email"
             label="이메일"
             name="email"
-            autoComplete="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
             margin="normal"
@@ -51,7 +67,10 @@ export default function Login() {
             label="비밀번호"
             type="password"
             id="password"
-            autoComplete="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
           />
           <Button
             type="submit"
@@ -64,7 +83,7 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link to="/join">계정이 없으신가요?</Link>
+              <CustomLink to="/join">계정이 없으신가요?</CustomLink>
             </Grid>
           </Grid>
         </Box>

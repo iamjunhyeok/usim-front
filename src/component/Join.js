@@ -1,26 +1,49 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import FormGroup from "@mui/material/FormGroup";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 
-import { Link } from "react-router-dom";
-import DateRangeSearch from "./DateRangeSearch";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 export default function Join() {
+  const validationSchema = yup.object({
+    email: yup
+      .string()
+      .email("이메일 형식이 아님")
+      .required("이메일이 입력되지 않음"),
+    password: yup.string().required("비밀번호가 입력되지 않음"),
+    passwordConfirmation: yup
+      .string()
+      .required("비밀번호 확인이 입력되지 않음")
+      .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않음"),
+    name: yup
+      .string()
+      .matches(/^[aA-zZ\s]+$/, "문자만 입력할 수 있음")
+      .required("이름이 입력되지 않음"),
+    phoneNumber: yup
+      .number()
+      .typeError("숫자만 입력할 수 있음")
+      .required("핸드폰 번호가 입력되지 않음"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+      name: "",
+      phoneNumber: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   const [request, setRequest] = useState(false);
   const handleRequest = () => {
     setRequest(true);
@@ -29,17 +52,9 @@ export default function Join() {
   const handleCert = () => {
     setCert(true);
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <Box
         sx={{
           marginTop: 8,
@@ -48,58 +63,72 @@ export default function Join() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          회원 등록
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={formik.handleSubmit}
+          sx={{ mt: 3 }}
+        >
           <TextField
             margin="normal"
-            autoComplete="given-name"
-            name="firstName"
-            required
-            fullWidth
-            id="firstName"
-            label="이메일"
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="lastName"
-            label="비밀번호"
-            name="lastName"
-            autoComplete="family-name"
-          />
-          <TextField
-            margin="normal"
-            required
+            name="email"
             fullWidth
             id="email"
-            label="비밀번호 확인"
-            name="email"
-            autoComplete="email"
+            label="이메일"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
             margin="normal"
-            autoComplete="given-name"
-            name="firstName"
-            required
             fullWidth
-            id="firstName"
+            id="password"
+            label="비밀번호"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="passwordConfirmation"
+            label="비밀번호 확인"
+            name="passwordConfirmation"
+            value={formik.values.passwordConfirmation}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.passwordConfirmation &&
+              Boolean(formik.errors.passwordConfirmation)
+            }
+            helperText={
+              formik.touched.passwordConfirmation &&
+              formik.errors.passwordConfirmation
+            }
+          />
+          <TextField
+            margin="normal"
+            name="name"
+            fullWidth
+            id="name"
             label="이름"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
           />
 
           <TextField
             margin="normal"
-            required
             fullWidth
-            name="password"
+            name="phoneNumber"
             label="핸드폰 번호"
-            id="password"
-            autoComplete="new-password"
+            id="phoneNumber"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -115,18 +144,21 @@ export default function Join() {
               ),
             }}
             disabled={cert}
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
-
           {request && !cert && (
             <TextField
               margin="normal"
-              required
               fullWidth
               name="password"
               label="인증 코드"
               type="password"
               id="password"
-              autoComplete="new-password"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -146,7 +178,7 @@ export default function Join() {
             sx={{ mt: 2 }}
             size="large"
           >
-            회원 가입
+            회원 등록
           </Button>
         </Box>
       </Box>

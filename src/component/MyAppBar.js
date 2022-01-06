@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 
 import { Link } from "react-router-dom";
 import MyDrawer from "./MyDrawer";
+import CustomLink from "./CustomLink";
 
 export default function MyAppBar() {
   const [auth, setAuth] = useState(false);
@@ -52,9 +53,9 @@ export default function MyAppBar() {
               </IconButton>
             </div>
           ) : (
-            <Link to="/login" style={{ textDecoration: "none" }}>
+            <CustomLink to="/login">
               <Button color="inherit">Login</Button>
-            </Link>
+            </CustomLink>
           )}
           <MyDrawer open={open} toggleDrawer={toggleDrawer} />
         </Toolbar>

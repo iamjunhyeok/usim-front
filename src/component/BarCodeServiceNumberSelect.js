@@ -15,7 +15,7 @@ export default function NumberSearch() {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.24:8080/mapping")
+      .get("http://192.168.0.52:8080/mapping")
       .then((response) => {
         setOptions(response.data);
       })

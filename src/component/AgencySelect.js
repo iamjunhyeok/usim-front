@@ -7,12 +7,13 @@ import Select from "@mui/material/Select";
 
 import axios from "axios";
 
-export default function ProductSearch() {
+export default function AgencySearch() {
   const [items, setItems] = useState(null);
   useEffect(() => {
     axios
-      .get("http://192.168.0.24:8080/products")
+      .get("http://192.168.0.52:8080/agency")
       .then((response) => {
+        console.log(response.data);
         setItems(response.data);
       })
       .catch((error) => {
@@ -20,25 +21,25 @@ export default function ProductSearch() {
       });
   }, []);
 
-  const [product, setProduct] = useState(null);
+  const [agency, setAgency] = useState(null);
   const handleChange = (event) => {
-    setProduct(event.target.value);
+    setAgency(event.target.value);
   };
 
-  if (!items) return <div>상품 로딩 중...</div>;
+  if (!items) return <div>로딩 중...</div>;
 
   return (
     <FormControl fullWidth margin="normal">
-      <InputLabel id="demo-simple-select-label">상품</InputLabel>
+      <InputLabel id="demo-simple-select-label">대리점</InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
-        value={product}
-        label="상품"
+        value={agency}
+        label="대리점"
         onChange={handleChange}
       >
         {items.map((item) => (
-          <MenuItem value={item.ID}>{item.PRODUCT_NAME}</MenuItem>
+          <MenuItem value={item.AGENCY}>{item.AGENCY_NAME}</MenuItem>
         ))}
       </Select>
     </FormControl>
