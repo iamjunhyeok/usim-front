@@ -1,20 +1,21 @@
 import React from "react";
 
 import Container from "@mui/material/Container";
-import AgencySearch from "./AgencySearch";
-import PassportNumberSearch from "./PassportNumberSearch";
-import NumberSearch from "./NumberSearch";
-import ProductSearch from "./ProductSearch";
+import AgencySearch from "./AgencySelect";
+import NumberSearch from "./BarCodeServiceNumberSelect";
+import ProductSearch from "./ProductSelect";
 
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import CustomInput from "./CustomInput";
 
 export default function Opening() {
   return (
     <Container maxWidth="md">
+      <CustomInput>임대 번호</CustomInput>
+
       <AgencySearch />
 
-      <PassportNumberSearch />
+      <CustomInput>여권 번호</CustomInput>
 
       <NumberSearch />
 
